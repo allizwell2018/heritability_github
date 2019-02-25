@@ -29,12 +29,16 @@ y2 = W2 * U + e2;
 
 %[u_LHalf, fitinfo] = lasso(W, y);
 %parpool()
+alpha=0.1
 opts = statset('UseParallel',false);
-[u_LHalf, fitinfo] = lasso_coarse(W, y,'CV',10,'Alpha',0.01,'Options',opts);
+[u_LHalf, fitinfo] = lasso_coarse(W, y,'CV',10,'Alpha',alpha,'Options',opts);
 lassoPlot(u_LHalf,fitinfo,'PlotType','CV');
 lambda=fitinfo.Lambda;
 fitinfo.IndexMinMSE
 fitinfo.Index1SE
+
+%%
+
 for i=1:length(lambda)-5
     %[u_LHalf(:,i), cpu_time] = IJT_LHalf(W, y, lambda(i), u_Init, MaxIterNum);
     %[u_LHalf(:,i), cpu_time] = IJT_L2rds(W, y, lambda(i), u_Init, MaxIterNum);
@@ -60,7 +64,6 @@ set(gcf,'Position',[1 1 1539 827])
 set(gca,'Position',[0.099 0.252 0.871 0.654])
 set(gca,'FontSize',36);
 
-
 figure
 semilogx(lambda2,h_lmm(:,1),'-bo');
 hold on 
@@ -73,6 +76,7 @@ set(gcf,'Position',[1 1 1539 827])
 set(gca,'Position',[0.099 0.252 0.871 0.654])
 set(gca,'FontSize',36);
 
+%%
 
 
 % A = input('Input a number:');
